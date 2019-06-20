@@ -31,6 +31,7 @@ urlpatterns = [
     path('user/joinsuccess', user_views.joinsuccess),
     path('user/join', user_views.join),
     path('user/loginform', user_views.loginform),
+    path('user/login', user_views.login),
 
     path('admin/', admin.site.urls),
 ]

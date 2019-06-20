@@ -29,3 +29,16 @@ def joinsuccess(request):
 
 def loginform(request):
     return render(request, 'user/loginform.html')
+
+
+def login(request):
+    email = request.POST['email']
+    password = request.POST['password']
+
+    user = User.objects.filter(email=email).filter(password=password)
+    print(user, type(user))
+    if not user:
+        return HttpResponseRedirect('/user/loginform')
+    else:
+        return HttpResponseRedirect('/')
+
