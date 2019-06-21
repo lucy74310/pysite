@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'board',
     'mathfilters',
     'guestbook',
     'user',
@@ -126,6 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'statics'),)
-
-
 STATIC_URL = '/assets/'
+
+
+# session
+SESSION_EXPIRE_AT_BROWSERS_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True

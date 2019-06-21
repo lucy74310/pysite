@@ -23,29 +23,30 @@
 		</table>
 	</form>
 	<ul>
+		{% for guestbook in guestbooklist %}
 		<li>
-			<table>
-				{% with listsize=guestbooklist|length %}
-				{% for guestbook in guestbooklist %}
+			<table style="border-collapse:collapse; border:2px solid #GGG;">
+				<!--{{ guestbooklist.count }} 도 가능-->
+				<!--{% with listsize=guestbooklist|length %}-->
+
 				<tr>
-
-					<td>{{ listsize|sub:forloop.counter0 }}</td>
-
+					{% comment 'forloop variable' %}
+					<td>{{ forloop.revcounter }}</td>
+					{% endcomment %}
+					<td>{{ guestbooklist|length | sub:forloop.counter0 }}</td>
 					<td>{{ guestbook.name }}</td>
-					<td>{{ guestbook.regdate }}</td>
+					<td>{{ guestbook.regdate | date:'Y-m-d H:i:s' }}</td>
 					<td><a href="/guestbook/deleteform/{{guestbook.id}}">삭제</a></td>
 				</tr>
 				<tr>
 					<td colspan=4>
-					{{ guestbook.content|linebreaksbr }}
+					{{ guestbook.content | linebreaksbr }}
 					</td>
 				</tr>
-				{% endfor %}
-				{% endwith %}
-
+				<!--{% endwith %}-->
 			</table>
-			<br>
 		</li>
+		{% endfor %}
 	</ul>
 </div>
 {% endblock %}
