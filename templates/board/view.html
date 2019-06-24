@@ -24,7 +24,7 @@
 			</tr>
 		</table>
 		<div class="bottom">
-			<a href="/board">글목록</a>
+			<a href="/board/{{page}}">글목록</a>
 			<a href="/board/writereplyform/{{board.id}}">답글쓰기</a>
 			{% if board.user.id == request.session.authuser.id %}
 			<a href="/board/modifyform/{{board.id}}">글수정</a>

@@ -25,8 +25,8 @@
 			{% for board in boardlist %}
 				<tr>
 					<!--<td>{{boardlist|length | sub:forloop.counter0}}</td>-->
-					{% with subval=b.startindex|add:forloop.counter0|sub:1 %}
-					<td>{{ paginator.count | sub:subval }}</td>
+					{% with subval=page_startindex|add:forloop.counter0|sub:1 %}
+					<td>{{ totalcount | sub:subval }}</td>
 					{% endwith %}
 					<td style="text-align:left; padding-left: {{board.depth | mul:10}}px;">
 						{% if board.depth > 0 %}
@@ -35,10 +35,10 @@
 						{% if board.delete == 1 %}
 							삭제된 글 입니다.
 						{% else %}
-							<a href="/board/view/{{board.id}}">{{board.title}}</a>
+							<a href="/board/{{nowpage}}/{{board.id}}">{{board.title}}</a>
 						{% endif %}
 					</td>
-					<td>{{board.user.name}}</td>
+					<td>{{board.user.name}}{{nowpage}}</td>
 					<td>{{board.hit}}</td>
 					<td>{{board.regdate | date:'Y-m-d H:i:s'}}</td>
 					<td>

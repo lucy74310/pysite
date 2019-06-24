@@ -131,5 +131,6 @@ STATIC_URL = '/assets/'
 
 
 # session
-SESSION_EXPIRE_AT_BROWSERS_CLOSE = True
-SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 21600 # 6시간동안 동작 없으면 세션 타임아웃
+SESSION_SAVE_EVERY_REQUEST = True # False이면 SESSION_COOKIE_AGE 설정한 시간 넘으면 무조건 세션 사라짐
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 브라우저 전체 닫으면
