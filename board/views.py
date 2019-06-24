@@ -18,10 +18,11 @@ def list(request, page=0):
     page = 1 if page == 0 else page
 
     # Django내장클래스 Paginator(게시글 리스트, 페이지당 게시물 갯수)
-    p = Paginator(boardlist, 2)
+    p = Paginator(boardlist, 1)
 
-    # 페이지 블록 설정 커스텀클래스 Myblock(표시페이지갯수, 현재페이지, Paginator객체)
-    b = Myblock(4, p.num_pages, page, p)
+    # 페이지 블록 설정 클래스 Myblock(표시페이지갯수, 현재페이지, Paginator객체)
+    b = Myblock(5, p.num_pages, page, p)
+
     data = {
         'boardlist': p.page(page).object_list,  # 현재 페이지 게시물 리스트
         'totalcount': p.count,     # 전체 게시물 갯수
@@ -33,31 +34,38 @@ def list(request, page=0):
     return render(request, 'board/list.html', data)
 
 
-# 글 한개 보기
+# 글 보기
 def view(request, page=1, id=0):
     if 'authuser' not in request.session:
         return HttpResponseRedirect('/board')
     else:
+        # id로 글 가져오기
         board = Board.objects.get(id=id)
+
+        # render로 넘길 context 사전형 객체
         data = {
             'board': board,
             'page': page
         }
-        tomorrow = datetime.today()+timedelta(days=1)
-        tomorrow = datetime.replace(tomorrow, hour=0, minute=0, second=0)
 
+        # set_cookie
         response = render(request, 'board/view.html', data)
+
         if request.COOKIES.get('alreadyseenpost') is not None:
             viewer = request.COOKIES.get('alreadyseenpost')
             viewerlist = viewer.split('+')
+
+            # id 없을 경우 조회수 업데이트 & id 쿠키에 넣어주기
             if str(id) not in viewerlist:
-                # id 없을 경우 조회수 업데이트
                 Board.objects.filter(id=id).update(hit=F('hit')+1)
-                # id 쿠키에 넣어주기
                 viewer = viewer + str(id) + '+'
-                response.set_cookie('alreadyseenpost', viewer, expires=tomorrow)
         else:
-            response.set_cookie('alreadyseenpost', str(id)+'+', expires=tomorrow)
+            viewer = str(id) + '+'
+
+        # 만료시간 (오늘 자정까지)
+        tomorrow = datetime.today()+timedelta(days=1)
+        tomorrow = datetime.replace(tomorrow, hour=0, minute=0, second=0)
+        response.set_cookie('alreadyseenpost', viewer, expires=tomorrow)
 
         return response
 
