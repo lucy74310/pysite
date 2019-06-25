@@ -45,10 +45,11 @@ def list(request, page=0):
 
 # 글 보기
 def view(request, page=1, id=0):
-    kwd = request.GET.get('kwd', '')
     if 'authuser' not in request.session:
         return HttpResponseRedirect('/board')
     else:
+        # 키워드 넘겨주기 (글 목록 갈 때 쓰려고)
+        kwd = request.GET.get('kwd', '')
         # id로 글 가져오기
         board = Board.objects.get(id=id)
 
