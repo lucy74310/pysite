@@ -14,9 +14,9 @@ from board.myblock import Myblock
 # 게시판 리스트
 def list(request, page=0):
     kwd = request.GET.get('kwd', '')
-    print(kwd, type(kwd))
+
     boardlist = Board.objects.all().\
-        filter(Q(title__contains=kwd) | Q(content__contains=kwd), Q(delete=0)).\
+        filter(Q(title__contains=kwd) | Q(content__contains=kwd)).\
         order_by('-groupno', 'orderno')
     page = 1 if page == 0 else page
 
@@ -137,8 +137,6 @@ def writereplyform(request, id=0):
 # 답글쓰기
 def writereply(request):
     parentboard = Board.objects.get(id=request.POST['id'])
-
-    print(parentboard.id)
 
     board = Board()
 
