@@ -48,6 +48,7 @@
 					<td>{{board.regdate | date:'Y-m-d H:i:s'}}</td>
 					<td>
 						{% if board.user.id == request.session.authuser.id and board.delete == 0 %}
+
 							<a href="/board/del/{{board.id}}" class="del">삭제</a>
 						{% endif %}
 					</td>

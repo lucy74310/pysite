@@ -20,6 +20,8 @@ import user.views as user_views
 import guestbook.views as guestbook_views
 import board.views as board_views
 
+
+
 urlpatterns = [
     path('', main_views.index),
 
@@ -54,3 +56,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 ]
+
+
