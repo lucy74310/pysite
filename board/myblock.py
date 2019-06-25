@@ -3,13 +3,16 @@ from math import ceil
 
 class Myblock:
 
-    def __init__(self, pageperblock, totalpages, nowpage, p):
+    def __init__(self, pageperblock,  nowpage, p):
 
         # 표시할 페이지 갯수
         self.pageperblock = pageperblock
 
+        # 전체 페이지 수
+        self.totalpages = p.num_pages
+
         # 전체 블록 수
-        self.totalblocknums = ceil(float(totalpages) / self.pageperblock)
+        self.totalblocknums = ceil(float(self.totalpages) / self.pageperblock)
 
         # 현재 블록
         self.currentblock = ceil(float(nowpage) / pageperblock)
@@ -18,7 +21,7 @@ class Myblock:
         self.blockstartpage = ((self.currentblock-1) * pageperblock) + 1
 
         # 현재 블록 마지막 페이지
-        self.blockendpage = totalpages if self.totalblocknums == self.currentblock \
+        self.blockendpage = self.totalpages if self.totalblocknums == self.currentblock \
             else (self.blockstartpage + (self.pageperblock-1))
 
         # 현재 블록 페이지 범위

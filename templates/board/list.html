@@ -7,8 +7,9 @@
 
 {% block content %}
 	<div id="board">
-		<form id="search_form" action="" method="post">
-			<input type="text" id="kwd" name="kwd" value="">
+		<form id="search_form" action="javascript:search({{nowpage}})" method="post">
+			{% csrf_token %}
+			<input type="text" id="kwd" name="kwd" value="{{kwd}}">
 			<input type="submit" value="찾기">
 		</form>
 		<table class="tbl-ex">
@@ -35,7 +36,11 @@
 						{% if board.delete == 1 %}
 							삭제된 글 입니다.
 						{% else %}
-							<a href="/board/{{nowpage}}/{{board.id}}">{{board.title}}</a>
+							{% if kwd == '' %}
+								<a href="/board/{{nowpage}}/{{board.id}}">{{board.title}}</a>
+							{% else %}
+								<a href="/board/{{nowpage}}/{{board.id}}?kwd={{kwd}}">{{board.title}}</a>
+							{% endif %}
 						{% endif %}
 					</td>
 					<td>{{board.user.name}}</td>
@@ -56,22 +61,38 @@
 			<ul>
 
 				{% if b.hasprevious %}
+					{% if kwd == '' %}
 					<li><a href="/board/{{b.blockstartpage|sub:1}}">◀</a></li>
+					{% else %}
+					<li><a href="/board/{{b.blockstartpage|sub:1}}?kwd={{kwd}}">◀</a></li>
+					{% endif %}
 				{% else %}
 					<li>◀</li>
 				{% endif %}
 
 				{% for page in b.range %}
 					{% if page == nowpage %}
+						{% if kwd == '' %}
 						<li class="selected"><a href="/board/{{page}}">{{ page }}</a></li>
+						{% else %}
+						<li class="selected"><a href="/board/{{page}}?kwd={{kwd}}">{{ page }}</a></li>
+						{% endif %}
 					{% else %}
-						<li><a href="/board/{{page}}">{{ page }}</a></li>
+						{% if kwd == '' %}
+							<li><a href="/board/{{page}}">{{ page }}</a></li>
+						{% else %}
+							<li><a href="/board/{{page}}?kwd={{kwd}}">{{ page }}</a></li>
+						{% endif %}
 					{% endif %}
 				{% endfor %}
 
 
 				{% if b.hasnext %}
-					<li><a href="/board/{{b.blockendpage|add:1}}">▶</a></li>
+					{% if kwd == '' %}
+						<li><a href="/board/{{b.blockendpage|add:1}}">▶</a></li>
+					{% else %}
+						<li><a href="/board/{{b.blockendpage|add:1}}?kwd={{kwd}}">▶</a></li>
+					{% endif %}
 				{% else %}
 					<li>▶</li>
 				{% endif %}
@@ -83,4 +104,15 @@
 			<a href="/board/writeform" id="new-book">글쓰기</a>
 		</div>
 	</div>
+	<script>
+		var search = function(nowpage) {
+			console.log(nowpage);
+			kwd = document.getElementById('kwd').value;
+			console.log(kwd);
+			document.getElementById("search_form").action = '/board/'+nowpage+'?kwd='+kwd;
+			console.log(document.getElementById("search_form").action)
+			document.getElementById("search_form").submit();
+		}
+
+	</script>
 {% endblock %}
